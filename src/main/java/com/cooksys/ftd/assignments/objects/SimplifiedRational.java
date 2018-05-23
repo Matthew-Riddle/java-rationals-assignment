@@ -3,6 +3,9 @@ package com.cooksys.ftd.assignments.objects;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class SimplifiedRational implements IRational {
+	
+	private int simplifiedNumerator = 0;
+	private int simplifiedDenominator = 0;
     /**
      * Determines the greatest common denominator for the given values
      *
@@ -12,7 +15,16 @@ public class SimplifiedRational implements IRational {
      * @throws IllegalArgumentException if a <= 0 or b < 0
      */
     public static int gcd(int a, int b) throws IllegalArgumentException {
-        throw new NotImplementedException();
+        if( a <= 0 || b < 0)
+        	throw new IllegalArgumentException();
+        
+        if(a == b) {
+        	return a;
+        } else if(b == 0) {
+        	return a;
+        } else {
+        	return gcd(b, a%b);
+        }
     }
 
     /**
@@ -29,7 +41,22 @@ public class SimplifiedRational implements IRational {
      * @throws IllegalArgumentException if the given denominator is 0
      */
     public static int[] simplify(int numerator, int denominator) throws IllegalArgumentException {
-        throw new NotImplementedException();
+        int simplified[] = { 0, 0 };
+        if(denominator == 0)
+        	throw new IllegalArgumentException();
+        if(numerator == 0) {
+        	simplified[0] = numerator;
+        	simplified[1] = denominator;
+        	return simplified;
+        }
+    	
+    	
+    	int gcd = gcd(Math.abs(numerator), Math.abs(denominator));
+    	simplified[0] = numerator / gcd;
+    	simplified[1] = denominator / gcd;
+    	
+    	return simplified;
+        
     }
 
     /**
@@ -45,7 +72,13 @@ public class SimplifiedRational implements IRational {
      * @throws IllegalArgumentException if the given denominator is 0
      */
     public SimplifiedRational(int numerator, int denominator) throws IllegalArgumentException {
-        throw new NotImplementedException();
+    	if(denominator == 0)
+        	throw new IllegalArgumentException();
+    	
+    	int simplified[] = simplify(numerator, denominator);
+    	this.simplifiedNumerator = simplified[0];
+    	this.simplifiedDenominator = simplified[1];
+    	
     }
 
     /**
@@ -53,7 +86,7 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public int getNumerator() {
-        throw new NotImplementedException();
+        return this.simplifiedNumerator;
     }
 
     /**
@@ -61,7 +94,7 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public int getDenominator() {
-        throw new NotImplementedException();
+        return this.simplifiedDenominator;
     }
 
     /**
@@ -77,7 +110,10 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public SimplifiedRational construct(int numerator, int denominator) throws IllegalArgumentException {
-        throw new NotImplementedException();
+    	if(denominator == 0)
+        	throw new IllegalArgumentException();
+    	
+    	return new SimplifiedRational(numerator, denominator);
     }
 
     /**
@@ -88,7 +124,10 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public boolean equals(Object obj) {
-        throw new NotImplementedException();
+        if(obj instanceof SimplifiedRational && ((SimplifiedRational) obj).getNumerator() == getNumerator() && ((SimplifiedRational) obj).getDenominator() == getDenominator())
+        	return true;
+        
+        return false;	
     }
 
     /**
@@ -100,6 +139,14 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public String toString() {
-        throw new NotImplementedException();
+    	String out = "";
+        if(getNumerator() > 0 && getDenominator() > 0)
+        	out += (Math.abs(getNumerator()) + "/" + Math.abs(getDenominator()));
+        else if(getDenominator() < 0 && this.getNumerator() < 0)
+        	out += (Math.abs(getNumerator()) + "/" + Math.abs(getDenominator()));
+        else
+        	out += ("-" + Math.abs(getNumerator()) + "/" + Math.abs(getDenominator()));
+        
+        return out;
     }
 }

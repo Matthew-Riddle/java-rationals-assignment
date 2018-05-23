@@ -14,8 +14,15 @@ public class Rational implements IRational {
      * @param denominator the denominator of the rational value
      * @throws IllegalArgumentException if the given denominator is 0
      */
+	
+	private int numerator, denominator;
+	
     public Rational(int numerator, int denominator) throws IllegalArgumentException {
-        throw new NotImplementedException();
+    	if(denominator == 0)
+    		throw new IllegalArgumentException();
+    	
+    	this.numerator = numerator;
+    	this.denominator = denominator;
     }
 
     /**
@@ -23,7 +30,7 @@ public class Rational implements IRational {
      */
     @Override
     public int getNumerator() {
-        throw new NotImplementedException();
+        return this.numerator;
     }
 
     /**
@@ -31,7 +38,7 @@ public class Rational implements IRational {
      */
     @Override
     public int getDenominator() {
-        throw new NotImplementedException();
+        return this.denominator;
     }
 
     /**
@@ -47,7 +54,9 @@ public class Rational implements IRational {
      */
     @Override
     public Rational construct(int numerator, int denominator) throws IllegalArgumentException {
-        throw new NotImplementedException();
+        if(denominator == 0)
+        	throw new IllegalArgumentException();
+        return new Rational(numerator, denominator);
     }
 
     /**
@@ -58,7 +67,10 @@ public class Rational implements IRational {
      */
     @Override
     public boolean equals(Object obj) {
-        throw new NotImplementedException();
+        if(obj instanceof Rational && ((Rational) obj).getNumerator() == getNumerator() && ((Rational) obj).getDenominator() == getDenominator())
+        	return true;
+        
+        return false;	
     }
 
     /**
@@ -70,6 +82,15 @@ public class Rational implements IRational {
      */
     @Override
     public String toString() {
-        throw new NotImplementedException();
+    	String out = "";
+        if(getNumerator() > 0 && getDenominator() > 0)
+        	out += (Math.abs(getNumerator()) + "/" + Math.abs(getDenominator()));
+        else if(getDenominator() < 0 && this.getNumerator() < 0)
+        	out += (Math.abs(getNumerator()) + "/" + Math.abs(getDenominator()));
+        else
+        	out += ("-" + Math.abs(getNumerator()) + "/" + Math.abs(getDenominator()));
+        
+        return out;
+
     }
 }
